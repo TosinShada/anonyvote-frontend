@@ -14,7 +14,6 @@
     "@fullcalendar/timegrid": "^5.10.1",
     "@fullcalendar/timeline": "^5.10.1",
     "@hookform/resolvers": "^2.8.3",
-    "@libsem/identity": "^1.0.22",
     "@libsem/protocols": "^1.0.27",
     "@reduxjs/toolkit": "^1.2.5",
     "animate.css": "^4.1.1",
@@ -111,14 +110,14 @@
   },
   "browserslist": {
     "production": [
-      "last 2 chrome version",
-      "last 2 firefox version",
-      "last 2 safari version"
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
     ],
     "development": [
-      "last 2 chrome version",
-      "last 2 firefox version",
-      "last 2 safari version"
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
     ]
   },
   "resolutions": {
