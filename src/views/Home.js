@@ -104,10 +104,11 @@ const Home = () => {
         const solidityProof = Semaphore.packToSolidityProof(fullProof)
 
         const packedProof = await packProof(solidityProof)
+
         const intProofs = []
         let intProof
         packedProof.map((proof) => {
-            intProof = proof.toBigInt()
+            intProof = BigInt(proof)
             intProofs.push(intProof)
             return intProofs
         })
