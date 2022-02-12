@@ -17,12 +17,11 @@ import {
     FormFeedback
 } from "reactstrap"
 import Poll from "react-polls"
-import path from "path"
 
 // ** Custom Components
 import Breadcrumbs from "../utility/breadcrumbs"
 
-import { getPolls } from "../services/apiCalls"
+import { generateMerkleProof, genNullifierHash, getPolls } from "../services/apiCalls"
 
 import img1 from "@src/assets/images/slider/06.jpg"
 import CreatePoll from "./CreatePoll"
@@ -33,7 +32,6 @@ import {
     broadcastSignal,
     voteOption
 } from "../services/logic"
-import { Semaphore, generateMerkleProof } from "@libsem/protocols"
 import { handleError, handleLoading, handleSuccess } from "../utility/alert"
 import { retrieveId } from "../utility/storage"
 
@@ -42,7 +40,7 @@ const Home = () => {
     const [data, setData] = useState([])
     const [show, setShow] = useState(false)
 
-    const ZERO_VALUE = 56568702409114342732388388764660722017601642515166106701650971766248247995328n
+    const ZERO_VALUE = "56568702409114342732388388764660722017601642515166106701650971766248247995328"
 
     useEffect(() => {
         getPolls().then((polls) => {
@@ -66,42 +64,33 @@ const Home = () => {
         const treeDepth = 20
         const identityCommitment = identity.identityCommitment
 
-        const nullifierHash = Semaphore.genNullifierHash(
-            externalNullifier,
-            identity.identityNullifier,
-            treeDepth
-        )
+        const genNullifierHashReq = {}
+        genNullifierHashReq.externalNullifier = externalNullifier
+        genNullifierHashReq.identityNullifier = identity.identityNullifier
+        genNullifierHashReq.treeDepth = treeDepth
 
-        const merkleProof = generateMerkleProof(
-            treeDepth,
-            ZERO_VALUE,
-            5,
-            identityCommitments,
-            identityCommitment
-        )
+        const genNullifierHashResponse = await genNullifierHash(genNullifierHashReq)
+
+        const nullifierHash = genNullifierHashResponse.data.data
 
         const serializedIdentity = {
             identityNullifier: identity.identityNullifier,
             identityTrapdoor: identity.identityTrapdoor
         }
 
-        const witness = Semaphore.genWitness(
-            serializedIdentity,
-            merkleProof,
-            externalNullifier,
-            signal
-        )
+        const genProofReq = {}
+        genProofReq.treeDepth = treeDepth
+        genProofReq.zeroValue = ZERO_VALUE
+        genProofReq.identityCommitments = identityCommitments
+        genProofReq.identityCommitment = identityCommitment
+        genProofReq.serializedIdentity = serializedIdentity
+        genProofReq.externalNullifier = externalNullifier
+        genProofReq.signal = signal
 
-        const wasmFilePath = path.join("/static", "semaphore.wasm")
-        const finalZkeyPath = path.join("/static", "semaphore_final.zkey")
-
-        const fullProof = await Semaphore.genProof(
-            witness,
-            wasmFilePath,
-            finalZkeyPath
-        )
-        
-        const solidityProof = Semaphore.packToSolidityProof(fullProof)
+        console.log(genProofReq)
+        const genProofResponse = await generateMerkleProof(genProofReq)
+        const solidityProof = genProofResponse.data.data.solidityProof
+        const root = genProofResponse.data.data.root
 
         const packedProof = await packProof(solidityProof)
 
@@ -116,7 +105,7 @@ const Home = () => {
         const isValidBroadcast = await broadcastSignal(
             signal,
             intProofs,
-            merkleProof.root,
+            root,
             nullifierHash,
             externalNullifier
         )

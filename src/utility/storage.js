@@ -12,20 +12,15 @@ const initStorage = () => {
 
 const storeId = (identity, identityCommitment) => {
   localStorage.setItem(key, identityCommitment)
-  const id = identity.getIdentity()
-  localStorage.setItem('SU_identity_nullifier', id.identityNullifier)
-  localStorage.setItem('SU_identity_trapdoor', id.identityTrapdoor)
-  localStorage.setItem('SU_identity_secret', identity.getSecret())
-  localStorage.setItem('SU_identity_multipartSecret', identity.getMultipartSecret())
+  localStorage.setItem('SU_identity_nullifier', identity.identityNullifier)
+  localStorage.setItem('SU_identity_trapdoor', identity.identityTrapdoor)
 }
 
 const retrieveId = () => {
   const identityCommitment = localStorage.getItem(key)
   const identityNullifier = localStorage.getItem('SU_identity_nullifier')
   const identityTrapdoor = localStorage.getItem('SU_identity_trapdoor')
-  const secret = localStorage.getItem('SU_identity_secret')
-  const multipartSecret = localStorage.getItem('SU_identity_multipartSecret')
-  return { identityCommitment, identityNullifier, identityTrapdoor, secret, multipartSecret }
+  return { identityCommitment, identityNullifier, identityTrapdoor }
 }
 
 const hasId = () => {
