@@ -5,15 +5,15 @@
 		"supportedNetwork": 1234
 	},
 	"chain": {
-		"url": "https://api.s0.b.hmny.io",
+		"url": "https://api.harmony.one",
 		"chainId": 1666700000,
 		"semaphoreTreeDepth": 10,
 		"contracts": {
-			"PoseidonT3": "0x4796A78cdA63fCD93A8B0C4fb2B380da62B7d39b",
-			"PoseidonT6": "0xc770F485b597Cb6405c06C67E2De724F07c52033",
-			"Verifier": "0xd7d502F4fEAE7cf3a5C3cAcF95B48a6a9cDE026C",
-			"Semaphore": "0xefAD5dd5884efD9bf5D7FD33e488990E9B3903D4",
-			"SemaphoreClient": "0xeD52FeF21E98dEfCe8f81E1DbFAFbA34d01b78B6"
+			"PoseidonT3": "0xEf591dd4ef00A9CDA91ad70724C75fA26C97A86D",
+			"PoseidonT6": "0x0ea2189DC031427c5d053Ef9cf1A827AE83BfFCB",
+			"Verifier": "0xC36a2e92c01F84af8e921671025223B4b0A7c271",
+			"Semaphore": "0x1671d1bBB553948fB58A39b6fa58c3F9587e06c6",
+			"SemaphoreClient": "0x5E6B1099aC7372aCd27E5F3e1BBE3e15635a05Ea"
 		}
 	} 
 }
